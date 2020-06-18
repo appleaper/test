@@ -24,5 +24,5 @@ vector用法
 
    9. 清空:vec.clear()　　　//清空之后，vec.size()为０
 
-   简单的程序：[vector简单使用](c++/vector用法.md)
+   简单的程序：[vector简单使用](c++/vector.cpp)
 
