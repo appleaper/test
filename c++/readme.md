@@ -26,7 +26,7 @@
 
 [4.constcast去掉const属性转换.cpp](类型转换/4.const_cast去掉const属性转换.cpp)
 
-[5.reinterpret_cast 重新解释类型转换.cpp](类型转换/5.reinterpret_cast 重新解释类型转换.cpp)
+[5.reinterpret_cast 重新解释类型转换.cpp](类型转换/5.reinterpret_cast重新解释类型转换.cpp)
 
 #### 小例子 
 
