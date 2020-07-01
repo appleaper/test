@@ -58,3 +58,4 @@ int main(int argc, char** argv) {
 }
 
 //使用的时候记得带参数就行
+//origin:https://github.com/oreillymedia/Learning-OpenCV-3_examples
