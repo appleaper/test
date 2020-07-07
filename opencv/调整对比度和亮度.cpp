@@ -1,4 +1,5 @@
 // origin:https://blog.csdn.net/qq_35294564/article/details/81068936
+// 讲解:http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/core/basic_linear_transform/basic_linear_transform.html
 //头文件
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
