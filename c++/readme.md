@@ -35,3 +35,6 @@
 [引用和指针.cpp](example/引用和指针.cpp)
 
 [日期类.cpp](example/日期类.cpp)
+
+
+cmake使用方法（window）：先创建cpp和cmake.txt文件，先cd到路径，然后输入make . 然后生成好之后再输入make --build .  （不要忘记“.”）然后打开debug，点击exe就能看到效果
