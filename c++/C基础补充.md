@@ -2,7 +2,7 @@
 
 Memset 用来对一段内存空间全部设置为某个字符，一般用在对定义的字符串进行初始化为‘ ’或‘/0’；例:char a[100];memset(a, '/0', sizeof(a));
 
-
+### strcmp的使用
 
 ```c++
 #include <stdio.h>
