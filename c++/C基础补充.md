@@ -282,3 +282,236 @@ int main()//读文件
 }
 ```
 
+
+### 往文件里面写东西
+
+```
+int main()//写文件
+{
+	FILE *p = fopen("D:\\temp\\a.txt", "w");//用只写的方式打开文件
+	if (p)
+	{
+		printf("成功\n");
+		char a[100] = "hello world";
+		int len = strlen(a);
+		int i;
+		for (i = 0; i < len; i++)
+			putc(a[i], p);//每次调用putc的时候，putc都会自动维护p这个指针指向的内存
+		fclose(p);
+	}
+	return 0;
+}
+```
+
+### 文件拷贝
+
+```c#
+int main03()//文件拷贝的代码
+{
+	FILE *p1 = fopen("D:\\temp\\a.txt", "r");//用读的方式打开a.txt
+	FILE *p2 = fopen("D:\\temp\\b.txt", "w");//用写的方式打开b.txt
+
+	if (p1 && p2)
+	{
+		//读取p1，将读到的内容写入p2，就实现了文件的拷贝
+		
+		while (1)
+		{
+			char c = getc(p1);//从p1中读一个字节
+			if (c == EOF)
+				break;
+			c++;
+			putc(c, p2);//将p1中读到的字节写入p2
+		}
+		fclose(p1);
+		fclose(p2);
+	}
+	return 0;
+}
+```
+
+
+
+### fgets()
+
+C 库函数 **char \*fgets(char \*str, int n, FILE \*stream)** 从指定的流 stream 读取一行，并把它存储在 **str** 所指向的字符串内。当读取 **(n-1)** 个字符时，或者读取到换行符时，或者到达文件末尾时，它会停止，具体视情况而定
+
+返回值：
+
+如果成功，该函数返回相同的 str 参数。如果到达文件末尾或者没有读取到任何字符，str 的内容保持不变，并返回一个空指针。
+
+如果发生错误，返回一个空指针。
+
+```C#
+#include <stdio.h>
+
+int main()
+{
+   FILE *fp;
+   char str[60];
+
+   /* 打开用于读取的文件 */
+   fp = fopen("file.txt" , "r");
+   if(fp == NULL) {
+      perror("打开文件时发生错误");
+      return(-1);
+   }
+   if( fgets (str, 60, fp)!=NULL ) {
+      /* 向标准输出 stdout 写入内容 */
+      puts(str);
+   }
+   fclose(fp);
+   
+   return(0);
+}
+```
+
+假设我们有一个文本文件 **file.txt**，它的内容如下。文件将作为实例中的输入：
+
+```
+We are in 2014
+```
+
+让我们编译并运行上面的程序，这将产生以下结果：
+
+```
+We are in 2014
+```
+
+
+
+### feof()
+
+feof()是检测流上的文件结束符的函数，如果文件结束，则返回非0值，否则返回0
+
+EOF是一个计算机术语，为End Of File的缩写，在操作系统中表示资料源无更多的资料可读取。资料源通常称为档案或串流。通常在文本的最后存在此字符表示资料结束。
+
+```c#
+#include <stdio.h>
+#include <string.h>
+#pragma warning(disable:4996)
+
+int main()//行读文件
+{
+	FILE* p = fopen("C:\\Users\\Administrator\\Desktop\\opencv\\1.txt", "r");
+	if (p)
+	{
+		//while (1)
+		//{
+		//	char a[100] = { 0 };
+		//	fgets(a, sizeof(a), p);//从p中读一行，包括行尾的回车
+		//	if (feof(p))//如果p已经到了文件最后，feof返回true
+		//		break;
+		//	printf("%s", a);
+		//}
+
+		while (!feof(p))
+		{
+			char a[100] = { 0 };
+			fgets(a, sizeof(a), p);//从p中读一行，包括行尾的回车
+			printf("%s", a);
+		}
+		fclose(p);
+	}
+	return 0;
+}
+```
+
+
+
+### 计算文件内容表达式的结果
+
+```c#
+#include <stdio.h>
+#include <stdlib.h>
+
+#pragma warning(disable:4996)
+
+int func(int a, int b, char c)
+{
+	switch (c)
+	{
+	case '+':
+		return a + b;
+	case '-':
+		return a - b;
+	case '*':
+		return a * b;
+	case '/':
+		return a / b;//暂时不考虑除数为0的情况
+	default:
+		return 0;
+	}
+}
+int main()//计算文件内容表达式的结果
+{
+	FILE *p = fopen("D:\\temp\\a.txt", "r");
+	if (p)
+	{
+		char content[100][100] = { 0 };
+		//while (!feof(p))
+		int index = 0;
+		while (1)
+		{
+			char array[100] = { 0 };
+			if (fgets(array, sizeof(array), p) == NULL)//读取一行
+				break;
+			//fgets读到最后一行的时候，并不是文件结尾，是到了最后一行之后再读一次才是文件结尾
+			//这样的调用，可以避免最后多循环一次
+			int a, b;
+			char c;
+			sscanf(array, "%d%c%d=", &a, &c, &b);
+			sprintf(content[index], "%d%c%d=%d\n", a, c, b, func(a, b, c));
+			index++;
+		}
+		fclose(p);
+		
+		//这里是保存结果
+		p = fopen("D:\\temp\\a.txt", "w");
+		int i;
+		for (i = 0; i < index; i++)
+		{
+			fputs(content[i], p);
+			//printf("%s", content[i]);
+		}
+		fclose(p);
+		
+	}
+	return 0;
+}
+```
+
+
+
+### sscanf()
+
+C 库函数 **int sscanf(const char \*str, const char \*format, ...)** 从字符串读取格式化输入。
+
+返回值：如果成功，该函数返回成功匹配和赋值的个数。如果到达文件末尾或发生读错误，则返回 EOF。
+
+```c#
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main()
+{
+   int day, year;
+   char weekday[20], month[20], dtm[100];
+
+   strcpy( dtm, "Saturday March 25 1989" );
+   sscanf( dtm, "%s %s %d  %d", weekday, month, &day, &year );
+
+   printf("%s %d, %d = %s\n", month, day, year, weekday );
+    
+   return(0);
+}
+```
+
+结果：
+
+```
+March 25, 1989 = Saturday
+```
+
+
